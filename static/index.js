@@ -1,4 +1,10 @@
-
+var isDesktop = navigator['userAgent'].match(/(ipad|iphone|ipod|android|windows phone)/i) ? false : true;
+var fontunit = isDesktop ? 20 : ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) / 320) * 10;
+document.write('<style type="text/css">' +
+    'html,body {font-size:' + (fontunit < 30 ? fontunit : '30') + 'px;}' +
+    (isDesktop ? '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}' :
+        '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
+    '</style>');
 if (isDesktop) document.write('<div id="gameBody">');
 var body, blockSize, GameLayer = [],
     GameLayerBG, touchArea = [],
@@ -161,14 +167,15 @@ function SubmitResults() {
         httpRequest.setRequestHeader("Content-type", "application/json");
         var name = document.getElementById("username").value;
         var message = document.getElementById("message").value;
-        httpRequest.send(encrypt(_gameScore + '&&&' + name + '&&&' + system + '&&&' + area + '&&&' + message));
+		var test="|_|";
+        httpRequest.send(encrypt(_gameScore + test + name + test + tj + test + system + test + area + test + message));
     }
 }
 
 function gameTime() {
     _gameTimeNum--;
     if (_gameTimeNum <= 0) {
-        GameTimeLayer.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;时间到！';
+        GameTimeLayer.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;就这？';
         gameOver();
         GameLayerBG.className += ' flash';
         createjs.Sound.play("end");
@@ -336,8 +343,8 @@ function shareText(score) {
     SubmitResults();
     if (score <= 49) return '跟我玩，你还嫩了点';
     if (score <= 99) return '拉扯是吧';
-    if (score <= 109 return '唉，我做出让步';
-    if (score <= 199) return '好好好，你说了算';
+    if (score <= 109) return '唉，我做出让步';
+    if (score <= 199) return '好好好，你说了';
     return '人？';
 }
 
